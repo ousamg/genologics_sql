@@ -250,6 +250,9 @@ def get_reanalysis_old_sample_name(session, sample_name):
     first9digits = str(sample_name)[:9]
 
     old_samples = session.query(Sample.name, Project.name).join(Project).filter(
-        Sample.name.like('%' + first9digits + '%'), Sample.name != sample_name).all()
+        Sample.name.like('%' + first9digits + '%'),
+        Sample.name != sample_name,
+        Sample.name.notilike("%Reanalyse%"),
+        Project.name.notilike("%Reanalyse%")).all()
 
     return old_samples
